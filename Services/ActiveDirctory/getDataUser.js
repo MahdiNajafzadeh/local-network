@@ -13,7 +13,7 @@ return letr === " " ? " " :
     {
         const x = execSync(`Get-ADUser -Filter "Name -Like '${name}'"`,{'shell':'powershell.exe'})
         const userDataArray = x.toString().trim().split("\r\n")[0].split(",OU=")[2]
-        console.log(userDataArray);
+        //console.log(userDataArray);
         return userDataArray ? { status : true , teamName : userDataArray } : { status : false , message:"username not found"}
     }
     catch
