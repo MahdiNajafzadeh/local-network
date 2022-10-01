@@ -1,14 +1,6 @@
 const { execSync } = require('node:child_process');
 
 exports.getDataUser = (name='') => {
-
-    /*
-return letr === " " ? " " :
-    letr === "x" ? "X" :
-    letr === "y" ? "Y" :
-    "neither";
-    */
-
     try
     {
         const x = execSync(`Get-ADUser -Filter "Name -Like '${name}'"`,{'shell':'powershell.exe'})

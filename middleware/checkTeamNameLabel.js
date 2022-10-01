@@ -54,12 +54,10 @@ module.exports = async (req, res, next) => {
           allLabelOnIssueString += allLabelOnIssue[index] + ",";
         }
       }
-      console.log(
-        // Modify Labels --> PUT API
-        await putAPI(`projects/${projectID}/issues/${issueID}/`, {
-          labels: allLabelOnIssueString,
-        })
-      );
+      // Modify Labels --> PUT API
+      await putAPI(`projects/${projectID}/issues/${issueID}/`, {
+        labels: allLabelOnIssueString,
+      });
     }
   } catch (error) {
     console.log("Error: " + error);
