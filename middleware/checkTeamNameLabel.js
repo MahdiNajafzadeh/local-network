@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
     if (usernameInRequest) {
       userTeamName = activeDirectory.getDataUser(usernameInRequest).teamName;
     }
-    // log Data for Debugging
+    // log Data for Debugging ---> هر چه خار آید ، روزی به کار آید :)
     // console.log(`------------------------------------------------------`);
     // console.log(`User Name      : ${usernameInRequest}`);
     // console.log(`Uesr Team Name : ${userTeamName}`);
@@ -26,22 +26,25 @@ module.exports = async (req, res, next) => {
     // console.log(`------------------------------------------------------`);
 
     // import All variable
-    let checkLabelTeamName = true;
+    let addTeamNameLabel = false;
     let allLabelOnIssue = [];
     let allLabelOnIssueString = "";
-    // check all label
-    for (const label of req.body.object_attributes.labels) {
-      if (label.title === userTeamName) {
-        checkLabelTeamName = true;
-        break;
-      } else {
-        checkLabelTeamName = false;
+    // check userTeamName
+    if (userTeamName) {
+      // check all label
+      for (const label of req.body.object_attributes.labels) {
+        if (label.title === userTeamName) {
+          addTeamNameLabel = false;
+          break;
+        } else {
+          addTeamNameLabel = true;
+        }
+        // add all label
+        allLabelOnIssue.push(label.title);
       }
-      // add all label
-      allLabelOnIssue.push(label.title);
     }
     // check to Do PUT or Not !
-    if (!checkLabelTeamName) {
+    if (addTeamNameLabel) {
       // Add User Team Name to All Labels
       allLabelOnIssue.push(userTeamName);
       // Ready Label to PUT API --> Array to String

@@ -1,4 +1,7 @@
-const Labels = [{name:"1"},{name:"2"},{name:"3"},{name:"4"}]
-for (const label of Labels) {
-  console.log(label);
+let me;
+if(me)
+{
+  console.log("UN ==> true");
+}else{
+  console.log("UN ==> false");
 }
