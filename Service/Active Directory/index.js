@@ -1,1 +1,0 @@
-const { getDataUser } = require('./getDataUser')
