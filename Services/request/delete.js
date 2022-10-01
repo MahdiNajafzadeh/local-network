@@ -9,7 +9,7 @@ let state = false,
   response = "No Response :(";
 
 module.exports = async (path) => {
-  console.log(`URL : ${config.url}/${path}`);
+  console.log(`URL : DELETE ${config.url}/${path}`);
 
   try {
     const resAPI = await axios.delete(`${config.url}/${path}`, {
@@ -17,7 +17,7 @@ module.exports = async (path) => {
         Authorization: "Bearer " + config.token,
       },
     });
-    if (resAPI.data) {
+    if (!resAPI.data) {
       state = true;
       response = resAPI.data;
     }

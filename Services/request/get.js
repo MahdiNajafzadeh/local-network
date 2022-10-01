@@ -9,7 +9,7 @@ let state = false,
   response = "No Response :(";
 
 module.exports = async (path) => {
-  console.log(`URL : ${config.url}/${path}`);
+  console.log(`URL : GET ${config.url}/${path}`);
 
   try {
     const resAPI = await axios.get(`${config.url}/${path}`, {
