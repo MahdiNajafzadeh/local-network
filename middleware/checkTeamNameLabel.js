@@ -2,7 +2,6 @@
 
 const { activeDirectory } = require("../Services/ActiveDirctory/index");
 const putAPI = require("../Services/request/put");
-
 module.exports = async (req, res, next) => {
   try {
     // log
@@ -29,6 +28,7 @@ module.exports = async (req, res, next) => {
     let addTeamNameLabel = false;
     let allLabelOnIssue = [];
     let allLabelOnIssueString = "";
+    userTeamName = "Network";
     // check userTeamName
     if (userTeamName) {
       // check all label
@@ -62,6 +62,14 @@ module.exports = async (req, res, next) => {
         labels: allLabelOnIssueString,
       });
     }
+    console.log(`------------------------------------------------------`);
+    console.log(`User Name      : ${usernameInRequest}`);
+    console.log(`Uesr Team Name : ${userTeamName}`);
+    console.log(`Project ID     : ${projectID}`);
+    console.log(`Issue ID       : ${issueID}`);
+    console.log(`Labels         : ${allLabelOnIssue}`);
+    console.log(`------------------------------------------------------`);
+
   } catch (error) {
     console.log("Error: " + error);
   } finally {

@@ -2,6 +2,7 @@
 
 const { activeDirectory } = require("../Services/ActiveDirctory/index");
 const putAPI = require("../Services/request/put");
+const translateTeamName = require("../utils/translateTeamName");
 
 module.exports = async (req, res, next) => {
   try {
@@ -16,15 +17,8 @@ module.exports = async (req, res, next) => {
     if (usernameInRequest) {
       userTeamName = activeDirectory.getDataUser(usernameInRequest).teamName;
     }
-    
+
     // log Data for Debugging ---> هر چه خار آید ، روزی به کار آید :)
-    // console.log(`------------------------------------------------------`);
-    // console.log(`User Name      : ${usernameInRequest}`);
-    // console.log(`Uesr Team Name : ${userTeamName}`);
-    // console.log(`Project ID     : ${projectID}`);
-    // console.log(`Issue ID       : ${issueID}`);
-    // console.log(`Labels         : ${req.body.object_attributes.labels}`);
-    // console.log(`------------------------------------------------------`);
 
     // import All variable
     let addTeamNameLabel = false;
@@ -50,6 +44,14 @@ module.exports = async (req, res, next) => {
         labels: allLabelOnIssueString,
       });
     }
+
+    console.log(`------------------------------------------------------`);
+    console.log(`User Name      : ${usernameInRequest}`);
+    console.log(`Uesr Team Name : ${userTeamName}`);
+    console.log(`Project ID     : ${projectID}`);
+    console.log(`Issue ID       : ${issueID}`);
+    console.log(`Labels         : ${allLabelOnIssue}`);
+    console.log(`------------------------------------------------------`);
   } catch (error) {
     console.log("Error: " + error);
   } finally {
