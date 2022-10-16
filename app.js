@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 // app configuration
-app.post("/",[checkTeamNameLabel], (req, res) => {
+app.post("/",[testMW], (req, res) => {
   if (req.body) {
     count++;
     console.log(`New Req --> Count: ${count}`);

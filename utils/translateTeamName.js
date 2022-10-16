@@ -1,5 +1,5 @@
-module.export = (teamName) => {
-  switch (teamName) {
+module.exports = (userTeamName) => {
+  switch (userTeamName) {
     case "Network":
       teamNameFarsi = "شبکه";
       break;

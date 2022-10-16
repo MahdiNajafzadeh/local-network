@@ -8,72 +8,62 @@ module.exports = async (req, res, next) => {
   try {
     // log
     console.log("check Label MW Running ...");
+
     // variables importing
     const usernameInRequest = req.body.user.name;
     const projectID = req.body.object_attributes.project_id;
     const issueID = req.body.object_attributes.iid;
     let userTeamName = "";
+    let addTeamNameLabel = true;
+    let allLabelOnIssue = [];
+    let allLabelOnIssueString = "";
+
     // check request parameters
     if (usernameInRequest) {
       userTeamName = activeDirectory.getDataUser(usernameInRequest).teamName;
     }
+
+    // check userTeamName & traslate Team Name to Persian & add labels to array
+    if (userTeamName) {
+      userTeamName = translateTeamName(userTeamName);
+      for (const label of req.body.object_attributes.labels) {
+        if(userTeamName === label.title) addTeamNameLabel = false;
+        allLabelOnIssue.push(label.title);
+      }
+    }
+
     // log Data for Debugging ---> هر چه خار آید ، روزی به کار آید :)
     // console.log(`------------------------------------------------------`);
+    // console.log(`                          Before                      `);
     // console.log(`User Name      : ${usernameInRequest}`);
     // console.log(`Uesr Team Name : ${userTeamName}`);
     // console.log(`Project ID     : ${projectID}`);
     // console.log(`Issue ID       : ${issueID}`);
-    // console.log(`Labels         : ${req.body.object_attributes.labels}`);
+    // console.log(`Labels         : ${allLabelOnIssue}`);
     // console.log(`------------------------------------------------------`);
 
-    // import All variable
-    let addTeamNameLabel = false;
-    let allLabelOnIssue = [];
-    let allLabelOnIssueString = "";
-    userTeamName = "Network";
-    console.log(`userTeamName --> En : ${userTeamName}`);
-    userTeamName = translateTeamName(userTeamName);
-    console.log(`userTeamName --> Fa : ${userTeamName}`);
-    // check userTeamName
-    if (userTeamName) {
-      // check all label
-      for (const label of req.body.object_attributes.labels) {
-        if (label.title === userTeamName) {
-          addTeamNameLabel = false;
-          break;
-        } else {
-          addTeamNameLabel = true;
-        }
-        // add all label
-        allLabelOnIssue.push(label.title);
-      }
+    for (let index = 0; index < allLabelOnIssue.length; index++) {
+      if(userTeamName === allLabelOnIssue[index]) addTeamNameLabel = false;
     }
-    // check to Do PUT or Not !
+    
+    // Add userTeamName & Ready Labels to PUT API & Run API
     if (addTeamNameLabel) {
-      // Add User Team Name to All Labels
       allLabelOnIssue.push(userTeamName);
-      // Ready Label to PUT API --> Array to String
-      for (let index = 0; index < allLabelOnIssue.length; index++) {
-        if (index === allLabelOnIssue.length - 1) {
-          // for last label
-          allLabelOnIssueString += allLabelOnIssue[index];
-        } else {
-          // for another labels
-          allLabelOnIssueString += allLabelOnIssue[index] + ",";
-        }
-      }
-      // Modify Labels --> PUT API
+      allLabelOnIssueString = allLabelOnIssue.toString();
       await putAPI(`projects/${projectID}/issues/${issueID}/`, {
         labels: allLabelOnIssueString,
       });
     }
-    console.log(`------------------------------------------------------`);
-    console.log(`User Name      : ${usernameInRequest}`);
-    console.log(`Uesr Team Name : ${userTeamName}`);
-    console.log(`Project ID     : ${projectID}`);
-    console.log(`Issue ID       : ${issueID}`);
-    console.log(`Labels         : ${allLabelOnIssue}`);
-    console.log(`------------------------------------------------------`);
+
+    // log Data for Debugging ---> هر چه خار آید ، روزی به کار آید :)
+    // console.log(`------------------------------------------------------`);
+    // console.log(`                          after                       `);
+    // console.log(`User Name      : ${usernameInRequest}`);
+    // console.log(`Uesr Team Name : ${userTeamName}`);
+    // console.log(`Project ID     : ${projectID}`);
+    // console.log(`Issue ID       : ${issueID}`);
+    // console.log(`Labels         : ${allLabelOnIssue}`);
+    // console.log(`------------------------------------------------------`);
   } catch (error) {
     console.log("Error: " + error);
   } finally {
