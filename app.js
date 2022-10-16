@@ -5,8 +5,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 // Middleware importing
 const checkTeamNameLabel = require("./middleware/checkTeamNameLabel");
-const removeLabel = require("./middleware/removeLabel"); // remove Label middleware --> Not Use
-const testMW = require("./middleware/testMW");
+// const removeLabel = require("./middleware/removeLabel"); // remove Label middleware --> Not Use
+// const testMW = require("./middleware/testMW"); // test MW --> Not Use
 // variables importing
 let count = 0;
 // mian package configuration
