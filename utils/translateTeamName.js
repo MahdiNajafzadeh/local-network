@@ -1,74 +1,50 @@
 module.exports = (userTeamName) => {
   switch (userTeamName) {
     case "Network":
-      teamNameFarsi = "شبکه";
-      break;
+      return "شبکه";
     case "User-Interface":
-      teamNameFarsi = "رابط کاربری";
-      break;
+      return "رابط کاربری";
     case "Financial":
-      teamNameFarsi = "مالی";
-      break;
+      return "مالی";
     case "Monitoring":
-      teamNameFarsi = "مانیتورینگ";
-      break;
+      return "مانیتورینگ";
     case "Hardware":
-      teamNameFarsi = "سخت افزار";
-      break;
+      return "سخت افزار";
     case "Graphic":
-      teamNameFarsi = "گرافیک";
-      break;
+      return "گرافیک";
     case "Farashenasa":
-      teamNameFarsi = "فراشناسا";
-      break;
+      return "فراشناسا";
     case "Devops":
-      teamNameFarsi = "Devops";
-      break;
+      return "Devops";
     case "Digital-Marketing":
-      teamNameFarsi = "دیجیتال مارکتینگ";
-      break;
+      return "دیجیتال مارکتینگ";
     case "Office":
-      teamNameFarsi = "اداری";
-      break;
+      return "اداری";
     case "Artificial-Intelligence":
-      teamNameFarsi = "هوش مصنوعی";
-      break;
+      return "هوش مصنوعی";
     case "Business-Development":
-      teamNameFarsi = "توسعه تجاری";
-      break;
+      return "توسعه تجاری";
     case "Translation":
-      teamNameFarsi = "ترجمه";
-      break;
+      return "ترجمه";
     case "Android":
-      teamNameFarsi = "اندروید";
-      break;
+      return "اندروید";
     case "Client":
-      teamNameFarsi = "کلاینت";
-      break;
+      return "کلاینت";
     case "DotNet":
-      teamNameFarsi = "دات نت";
-      break;
+      return "دات نت";
     case "Infrastructure":
-      teamNameFarsi = "زیرساخت";
-      break;
+      return "زیرساخت";
     case "Project-Control":
-      teamNameFarsi = "مدیریت پروژه";
-      break;
+      return "مدیریت پروژه";
     case "Data-Gathering":
-      teamNameFarsi = "داده‌گیری";
-      break;
+      return "داده‌گیری";
     case "DataBase":
-      teamNameFarsi = "پایگاه داده";
-      break;
+      return "پایگاه داده";
     case "Wordpress":
-      teamNameFarsi = "وردپرس";
-      break;
+      return "وردپرس";
     case "Security":
-      teamNameFarsi = "امنیت";
-      break;
+      return "امنیت";
     default:
-      teamNameFarsi = null;
-      break;
+      return "بدون گروه";
   }
-  return teamNameFarsi;
 };

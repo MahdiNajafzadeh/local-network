@@ -21,14 +21,13 @@ module.exports = async (req, res, next) => {
     // check request parameters
     if (usernameInRequest) {
       userTeamName = activeDirectory.getDataUser(usernameInRequest).teamName;
-    }
-
-    // check userTeamName & traslate Team Name to Persian & add labels to array
-    if (userTeamName) {
-      userTeamName = translateTeamName(userTeamName);
-      for (const label of req.body.object_attributes.labels) {
-        if(userTeamName === label.title) addTeamNameLabel = false;
-        allLabelOnIssue.push(label.title);
+      // check userTeamName & traslate Team Name to Persian & add labels to array
+      if (userTeamName) {
+        userTeamName = translateTeamName(userTeamName);
+        for (const label of req.body.object_attributes.labels) {
+          if (userTeamName === label.title) addTeamNameLabel = false;
+          allLabelOnIssue.push(label.title);
+        }
       }
     }
 
@@ -43,9 +42,9 @@ module.exports = async (req, res, next) => {
     // console.log(`------------------------------------------------------`);
 
     for (let index = 0; index < allLabelOnIssue.length; index++) {
-      if(userTeamName === allLabelOnIssue[index]) addTeamNameLabel = false;
+      if (userTeamName === allLabelOnIssue[index]) addTeamNameLabel = false;
     }
-    
+
     // Add userTeamName & Ready Labels to PUT API & Run API
     if (addTeamNameLabel) {
       allLabelOnIssue.push(userTeamName);
