@@ -2,6 +2,8 @@
 
 const { activeDirectory } = require("../Services/ActiveDirctory/index");
 const putAPI = require("../Services/request/put");
+const translateTeamName = require("../utils/translateTeamName");
+
 module.exports = async (req, res, next) => {
   try {
     // log
@@ -29,6 +31,9 @@ module.exports = async (req, res, next) => {
     let allLabelOnIssue = [];
     let allLabelOnIssueString = "";
     userTeamName = "Network";
+    console.log(`userTeamName --> En : ${userTeamName}`);
+    userTeamName = translateTeamName(userTeamName);
+    console.log(`userTeamName --> Fa : ${userTeamName}`);
     // check userTeamName
     if (userTeamName) {
       // check all label
@@ -69,7 +74,6 @@ module.exports = async (req, res, next) => {
     console.log(`Issue ID       : ${issueID}`);
     console.log(`Labels         : ${allLabelOnIssue}`);
     console.log(`------------------------------------------------------`);
-
   } catch (error) {
     console.log("Error: " + error);
   } finally {
