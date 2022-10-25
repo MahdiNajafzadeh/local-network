@@ -1,6 +1,6 @@
 const { execSync } = require("node:child_process");
 
-exports.getDataUser = (name = "") => {
+module.exports = (name = "") => {
   try {
     // set variables
     let status = false,
@@ -16,7 +16,7 @@ exports.getDataUser = (name = "") => {
 
     // check to number of user results
     if (!resulteQueryFromAD || resulteQueryArry.length > 3) {
-      log(`There is more than 1 ${name} username!`);
+      console.log(`There is more than 1 ${name} username!`);
       return {
         status: status,
         message: `There is more than 1 ${name} username!`,
