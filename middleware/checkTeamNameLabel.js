@@ -3,6 +3,7 @@
 const getDataUser = require("../Services/ActiveDirctory/getDataUser");
 const putAPI = require("../Services/request/put");
 const translateTeamName = require("../utils/translateTeamName");
+const wirteComment = require("../utils/wirteComment");
 
 module.exports = async (req, res, next) => {
   try {
@@ -12,26 +13,38 @@ module.exports = async (req, res, next) => {
     // variables importing
     const usernameInRequest = req.body.user.name,
       projectID = req.body.object_attributes.project_id,
-      issueID = req.body.object_attributes.iid;
+      issueID = req.body.object_attributes.iid,
+      labels = req.body.object_attributes.labels;
     let userTeamName,
       addTeamNameLabel = true,
       allLabelOnIssue = [],
       allLabelOnIssueString,
-      userObjectData;
+      userObjectData,
+      userTeamNameFa;
 
     // check request parameters
     if (usernameInRequest) {
       // Get Data from AD
       userObjectData = getDataUser(usernameInRequest);
-      // check userTeamName & traslate Team Name to Persian & add labels to array
-      if (userObjectData.userTeamName) {
-        userTeamName = translateTeamName(userTeamName);
-        for (const label of req.body.object_attributes.labels) {
-          if (userTeamName === label.title) addTeamNameLabel = false;
-          allLabelOnIssue.push(label.title);
+      // Check to Error
+      if (userObjectData.errorCode === 404) {
+        // if user not found
+        wirteComment(projectID, issueID, usernameInRequest);
+        addTeamNameLabel = false;
+        // check userTeamName & traslate Team Name to Persian & add labels to array
+        if (userObjectData.userTeamName) {
+          userTeamNameFa = translateTeamName(userTeamName);
+          for (const label of labels) {
+            if (userTeamNameFa === label.title) addTeamNameLabel = false;
+            allLabelOnIssue.push(label.title);
+          }
+        } else {
+          console.log(userObjectData.message);
         }
-      } else {
-        console.log(userObjectData.message);
+        // if more than 1 user found !
+      } else if (userObjectData.errorCode === 405) {
+        console.log(userObjectData.messages);
+        addTeamNameLabel = false;
       }
     }
 
@@ -47,7 +60,7 @@ module.exports = async (req, res, next) => {
 
     // Add userTeamName & Ready Labels to PUT API & Run API
     if (addTeamNameLabel) {
-      allLabelOnIssue.push(userTeamName);
+      allLabelOnIssue.push(userTeamNameFa);
       allLabelOnIssueString = allLabelOnIssue.toString();
       await putAPI(`projects/${projectID}/issues/${issueID}/`, {
         labels: allLabelOnIssueString,

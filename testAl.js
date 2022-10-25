@@ -4,22 +4,22 @@ putAPI = require("./Services/request/put");
 deleteAPI = require("./Services/request/delete");
 
 // Get Data Before Request
-getAPI("/projects/188/issues/1/notes?sort=asc").then((res) => {
-  for (const comment of res.data) {
-    console.log(comment.body);
-  }
-});
+// getAPI("/projects/188/issues/1/notes?sort=asc").then((res) => {
+//   for (const comment of res.data) {
+//     console.log(comment.body);
+//   }
+// });
 // // Send Request
-let body = "I can write Comment !";
-postAPI(`/projects/188/issues/1/notes?body=${body}`).then((res) => {
-  console.log("Hey Responss State is " + res.state);
-  // Get Data After Request
-  getAPI("/projects/188/issues/1/notes?sort=asc").then((res) => {
-    for (const comment of res.data) {
-      console.log(comment.body);
-    }
-  });
-});
+// let body = "I can write Comment !";
+// postAPI(`/projects/188/issues/1/notes?body=${body}`).then((res) => {
+//   console.log("Hey Responss State is " + res.state);
+//   // Get Data After Request
+//   getAPI("/projects/188/issues/1/notes?sort=asc").then((res) => {
+//     for (const comment of res.data) {
+//       console.log(comment.body);
+//     }
+//   });
+// });
 
 // Modifing Comment
 let body2 = "I can Modifing Comment";
@@ -44,16 +44,26 @@ let body2 = "I can Modifing Comment";
 // });
 
 // Delete Comment
-getAPI("/projects/188/issues/1/notes?sort=asc").then((res) => {
-  for (const comment of res.data) {
-    if (comment.body.split(" ")[0] === "assigned") {
-      console.log("I canot delete this comment");
-      continue;
-    }
-    deleteAPI(`/projects/188/issues/1/notes/${comment.id}/`).then((res) => {
-      if (res.state) {
-        console.log("Yes , Deleted Comment".split(" "));
-      }
-    });
-  }
-});
+// getAPI("/projects/188/issues/1/notes?sort=asc").then((res) => {
+//   for (const comment of res.data) {
+//     if (comment.body.split(" ")[0] === "assigned") {
+//       console.log("I canot delete this comment");
+//       continue;
+//     }
+//     deleteAPI(`/projects/188/issues/1/notes/${comment.id}/`).then((res) => {
+//       if (res.state) {
+//         console.log("Yes , Deleted Comment".split(" "));
+//       }
+//     });
+//   }
+// });
+let userName = "mahdi.najafzadeh";
+body = `
+خطایی در ثبت لیبل نام تیم رخ داده است
+
+نام کاربری @${userName} دارای نام تیم نمی‌باشد 
+
+پیگیری شود : @arash.ghavidast
+
+`;
+console.log(body);

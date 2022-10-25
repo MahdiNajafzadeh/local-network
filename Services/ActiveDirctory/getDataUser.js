@@ -24,6 +24,24 @@ module.exports = (name = "") => {
     } else {
       status = true;
     }
+    if (!resulteQueryFromAD) {
+      if (resulteQueryArry.length > 3) {
+        status = true;
+      } else {
+        console.log(`There is more than 1 ${name} username!`);
+        return {
+          status: status,
+          errorCode: 405,
+          message: `There is more than 1 ${name} username!`,
+        };
+      }
+    } else {
+      return {
+        status: status,
+        errorCode: 404,
+        message: `Not found ${name}`,
+      };
+    }
     // analysis data
     const allDataUser = resulteQueryArry[2].split(" ")[1].trim().split("/");
     // check to Disabled propertie
@@ -40,8 +58,9 @@ module.exports = (name = "") => {
     };
     // return Data
     return objectReturnData;
-  } catch {
+  } catch (error) {
     // error Handle
+    console.log(error);
     return { status: false, message: "unknown error !" };
   }
 };
