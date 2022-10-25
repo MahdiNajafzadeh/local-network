@@ -1,32 +1,29 @@
-// package Importing
-
+// import Config
 const config = require("../../config/gitlab");
+// import package
 const axios = require("axios");
-
-// variable importing
-
-let state = false,
-  response = "No Response :(";
-
-module.exports = async (path, body = {}) => {
-  console.log(`URL : POST ${config.url}/${path}`);
-
+// set variables
+const token = config.token;
+// set Config For Requests
+const API = axios.create({
+  baseURL: config.url,
+  timeout: 5000,
+  headers: { Authorization: "Bearer " + token },
+});
+// Export Module
+module.exports = async (path, body) => {
   try {
-    const resAPI = await axios.post(`${config.url}/${path}`, body, {
-      headers: {
-        Authorization: "Bearer " + config.token,
-      },
-    });
-    if (resAPI.data) {
-      state = true;
-      response = resAPI.data;
+    // Send Request
+    response = await API.post(path, body);
+    // Check Response
+    if (response.data) {
+      return { state: true, data: response.data };
+    } else {
+      return { state: false, data: response.statusCode };
     }
   } catch (error) {
-    response = error;
+    // Error Handle
+    console.log("Error to Send Request ! " + error.message);
+    return { state: false, data: false };
   }
-  // Return Data
-  return {
-    state: state,
-    data: response,
-  };
 };

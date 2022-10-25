@@ -13,21 +13,25 @@ module.exports = async (req, res, next) => {
     const usernameInRequest = req.body.user.name;
     const projectID = req.body.object_attributes.project_id;
     const issueID = req.body.object_attributes.iid;
-    let userTeamName = "";
-    let addTeamNameLabel = true;
-    let allLabelOnIssue = [];
-    let allLabelOnIssueString = "";
+    let userTeamName,
+      addTeamNameLabel = true,
+      allLabelOnIssue = [],
+      allLabelOnIssueString;
+    userObjectData;
 
     // check request parameters
     if (usernameInRequest) {
-      userTeamName = activeDirectory.getDataUser(usernameInRequest).teamName;
+      // Get Data from AD
+      userObjectData = activeDirectory.getDataUser(usernameInRequest);
       // check userTeamName & traslate Team Name to Persian & add labels to array
-      if (userTeamName) {
+      if (userObjectData.userTeamName) {
         userTeamName = translateTeamName(userTeamName);
         for (const label of req.body.object_attributes.labels) {
           if (userTeamName === label.title) addTeamNameLabel = false;
           allLabelOnIssue.push(label.title);
         }
+      } else {
+        console.log(userObjectData.message);
       }
     }
 
@@ -40,10 +44,6 @@ module.exports = async (req, res, next) => {
     // console.log(`Issue ID       : ${issueID}`);
     // console.log(`Labels         : ${allLabelOnIssue}`);
     // console.log(`------------------------------------------------------`);
-
-    for (let index = 0; index < allLabelOnIssue.length; index++) {
-      if (userTeamName === allLabelOnIssue[index]) addTeamNameLabel = false;
-    }
 
     // Add userTeamName & Ready Labels to PUT API & Run API
     if (addTeamNameLabel) {
@@ -64,6 +64,7 @@ module.exports = async (req, res, next) => {
     // console.log(`Labels         : ${allLabelOnIssue}`);
     // console.log(`------------------------------------------------------`);
   } catch (error) {
+    // Error logging
     console.log("Error: " + error);
   } finally {
     next();
