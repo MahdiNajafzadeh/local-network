@@ -10,14 +10,14 @@ module.exports = async (req, res, next) => {
     console.log("check Label MW Running ...");
 
     // variables importing
-    const usernameInRequest = req.body.user.name;
-    const projectID = req.body.object_attributes.project_id;
-    const issueID = req.body.object_attributes.iid;
+    const usernameInRequest = req.body.user.name,
+      projectID = req.body.object_attributes.project_id,
+      issueID = req.body.object_attributes.iid;
     let userTeamName,
       addTeamNameLabel = true,
       allLabelOnIssue = [],
-      allLabelOnIssueString;
-    userObjectData;
+      allLabelOnIssueString,
+      userObjectData;
 
     // check request parameters
     if (usernameInRequest) {
