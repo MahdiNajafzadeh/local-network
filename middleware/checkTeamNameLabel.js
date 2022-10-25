@@ -1,6 +1,6 @@
 // package importing
 
-const { activeDirectory } = require("../Services/ActiveDirctory/index");
+const getDataUser = require("../Services/ActiveDirctory/getDataUser");
 const putAPI = require("../Services/request/put");
 const translateTeamName = require("../utils/translateTeamName");
 
@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
     // check request parameters
     if (usernameInRequest) {
       // Get Data from AD
-      userObjectData = activeDirectory.getDataUser(usernameInRequest);
+      userObjectData = getDataUser(usernameInRequest);
       // check userTeamName & traslate Team Name to Persian & add labels to array
       if (userObjectData.userTeamName) {
         userTeamName = translateTeamName(userTeamName);
