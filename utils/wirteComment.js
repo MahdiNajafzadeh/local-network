@@ -1,26 +1,36 @@
-postAPI = require("../Services/request/post");
-module.exports = (projectID, issueID, userName) => {
+const postAPI = require("../Services/request/post");
+const { log } = require("node:console");
+module.exports = (projectID, issueID, userName, body) => {
+  let gijg = "?body=${body}";
+  let body2 = {body: body}
   try {
-    body = `
-    خطایی در ثبت لیبل نام تیم رخ داده است
-
-نام کاربری @${userName} دارای نام تیم نمی‌باشد 
-
-پیگیری شود : @arash.ghavidast
-
-    `;
     if (projectID && issueID && userName) {
-      postAPI(`/projects/${projectID}/issues/${issueID}/notes?body=${body}`)
+      postAPI(`/projects/${projectID}/issues/${issueID}/notes`, body2)
         .then((res) => {
-          console.log("Comment Writing ... done! \n state API : " + res.state);
+          if (res.status) {
+            log(`
+            Comment Writing ... Done! 
+            state API : ${res.state}
+            `);
+          } else {
+            log(`
+            Comment Writing ... Failed! 
+            state API : ${res.state}
+            API Error : ${res.data} 
+             `);
+          }
         })
         .catch((error) => {
-          console.log("Error to write comment : " + error.message);
+          log("Error to write comment : " + error.message);
         });
     } else {
-      console.log("Body not Valid \n Body : " + body + "\n");
+      log(`Data not Valid
+      projectID : ${projectID}
+      issueID : ${issueID}
+      Body : \n${body}
+      `);
     }
   } catch (error) {
-    console.log("Error to write comment : " + error.message);
+    log("Error to write comment : " + error.message);
   }
 };

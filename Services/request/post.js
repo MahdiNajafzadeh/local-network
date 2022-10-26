@@ -11,7 +11,7 @@ const API = axios.create({
   headers: { Authorization: "Bearer " + token },
 });
 // Export Module
-module.exports = async (path, body) => {
+module.exports = async (path, body="") => {
   try {
     // Send Request
     response = await API.post(path, body);

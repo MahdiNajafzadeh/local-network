@@ -13,55 +13,69 @@ module.exports = async (req, res, next) => {
     // variables importing
     const usernameInRequest = req.body.user.name,
       projectID = req.body.object_attributes.project_id,
-      issueID = req.body.object_attributes.iid,
-      labels = req.body.object_attributes.labels;
+      issueID = req.body.object_attributes.iid;
+
     let userTeamName,
-      addTeamNameLabel = true,
       allLabelOnIssue = [],
-      allLabelOnIssueString,
       userObjectData,
       userTeamNameFa;
 
-    // check request parameters
-    if (usernameInRequest) {
-      // Get Data from AD
-      userObjectData = getDataUser(usernameInRequest);
-      // Check to Error
-      if (userObjectData.errorCode === 404) {
-        // if user not found
-        wirteComment(projectID, issueID, usernameInRequest);
-        addTeamNameLabel = false;
-        // check userTeamName & traslate Team Name to Persian & add labels to array
-        if (userObjectData.userTeamName) {
-          userTeamNameFa = translateTeamName(userTeamName);
-          for (const label of labels) {
-            if (userTeamNameFa === label.title) addTeamNameLabel = false;
-            allLabelOnIssue.push(label.title);
-          }
-        } else {
-          console.log(userObjectData.message);
-        }
-        // if more than 1 user found !
-      } else if (userObjectData.errorCode === 405) {
-        console.log(userObjectData.messages);
-        addTeamNameLabel = false;
-      }
+    const bodyCommentFor404Error = `خطایی در ثبت لیبل نام تیم رخ داده است  \n\nنام کاربری @${usernameInRequest} دارای نام تیم نمی‌باشد \n\nپیگیری شود : @arash.ghavidast`;
+    const bodyCommentFor405Error = `خطایی در ثبت لیبل نام تیم رخ داده است  \n\n2 نام کاربری با اسم @${usernameInRequest} وجود دارد. این خطا ممکن است در بخش پردازش رخ داده باشد.  \n\n پیگیری شود : @arash.ghavidas`;
+    // Listing All Labels on Issue
+    req.body.object_attributes.labels.forEach((label) => {
+      if(label.title) allLabelOnIssue.push(label.title);
+    });
+    // log Data for Debugging ---> هر چه خار آید ، روزی به کار آید :)
+    console.log(`------------------------------------------------------`);
+    console.log(`                          Before                      `);
+    console.log(`User Name      : ${usernameInRequest}`);
+    console.log(`Uesr Team Name : ${userTeamName}`);
+    console.log(`Project ID     : ${projectID}`);
+    console.log(`Issue ID       : ${issueID}`);
+    console.log(`Labels         : ${allLabelOnIssue}`);
+    console.log(`------------------------------------------------------`);
+
+    userObjectData = getDataUser(usernameInRequest);
+    switch (userObjectData.errorCode) {
+      case 404:
+        wirteComment(
+          projectID,
+          issueID,
+          usernameInRequest,
+          bodyCommentFor404Error
+        );
+        break;
+      case 405:
+        wirteComment(
+          projectID,
+          issueID,
+          usernameInRequest,
+          bodyCommentFor405Error
+        );
+        break;
+      default:
+        userTeamName = userObjectData.userTeamName;
+        userTeamNameFa = translateTeamName(userTeamName);
+        addTeamNameLabel();
+        break;
     }
 
     // log Data for Debugging ---> هر چه خار آید ، روزی به کار آید :)
-    // console.log(`------------------------------------------------------`);
-    // console.log(`                          Before                      `);
-    // console.log(`User Name      : ${usernameInRequest}`);
-    // console.log(`Uesr Team Name : ${userTeamName}`);
-    // console.log(`Project ID     : ${projectID}`);
-    // console.log(`Issue ID       : ${issueID}`);
-    // console.log(`Labels         : ${allLabelOnIssue}`);
-    // console.log(`------------------------------------------------------`);
+    console.log(`------------------------------------------------------`);
+    console.log(`                          After                       `);
+    console.log(`User Name      : ${usernameInRequest}`);
+    console.log(`Uesr Team Name : ${userTeamName}`);
+    console.log(`Fa Team Name   : ${userTeamNameFa}`);
+    console.log(`Project ID     : ${projectID}`);
+    console.log(`Issue ID       : ${issueID}`);
+    console.log(`Labels         : ${allLabelOnIssue}`);
+    console.log(`------------------------------------------------------`);
 
     // Add userTeamName & Ready Labels to PUT API & Run API
-    if (addTeamNameLabel) {
+    async function addTeamNameLabel() {
       allLabelOnIssue.push(userTeamNameFa);
-      allLabelOnIssueString = allLabelOnIssue.toString();
+      const allLabelOnIssueString = allLabelOnIssue.toString();
       await putAPI(`projects/${projectID}/issues/${issueID}/`, {
         labels: allLabelOnIssueString,
       });
