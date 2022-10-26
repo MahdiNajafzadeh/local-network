@@ -11,10 +11,10 @@ const API = axios.create({
   headers: { Authorization: "Bearer " + token },
 });
 // Export Module
-module.exports = async (path, body="") => {
+module.exports = async (path, body = {}) => {
   try {
     // Send Request
-    response = await API.post(path, body);
+    const response = await API.post(path, body);
     // Check Response
     if (response.data) {
       return { state: true, data: response.data };
@@ -23,7 +23,7 @@ module.exports = async (path, body="") => {
     }
   } catch (error) {
     // Error Handle
-    console.log("Error to Send Request ! " + error.message);
+    console.log("Error to Send Request : " + error.message);
     return { state: false, data: false };
   }
 };

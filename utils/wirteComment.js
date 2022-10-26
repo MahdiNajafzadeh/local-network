@@ -7,7 +7,7 @@ module.exports = (projectID, issueID, userName, body) => {
     if (projectID && issueID && userName) {
       postAPI(`/projects/${projectID}/issues/${issueID}/notes`, body2)
         .then((res) => {
-          if (res.status) {
+          if (res.state) {
             log(`
             Comment Writing ... Done! 
             state API : ${res.state}
@@ -18,6 +18,7 @@ module.exports = (projectID, issueID, userName, body) => {
             state API : ${res.state}
             API Error : ${res.data} 
              `);
+             log(res.data)
           }
         })
         .catch((error) => {
