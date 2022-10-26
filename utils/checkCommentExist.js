@@ -6,6 +6,7 @@ module.exports = (projectID, issueID, bodyComment) => {
         let existComment = false;
         for (const comment of res.data) {
           existComment = comment.body === bodyComment ? true : false;
+          console.log(comment.body);
         }
         return existComment;
       })
