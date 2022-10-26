@@ -41,24 +41,26 @@ module.exports = async (req, res, next) => {
     userObjectData = getDataUser(usernameInRequest);
     switch (userObjectData.errorCode) {
       case 404:
-        if (!checkCommentExist(projectID, issueID, bodyCommentFor404Error))
+        if (!checkCommentExist(projectID, issueID, bodyCommentFor404Error)){
           wirteComment(
             projectID,
             issueID,
             usernameInRequest,
             bodyCommentFor404Error
           );
+        }
         // if (!checkCommentExists(projectID,issueID,usernameInRequest,bodyCommentFor404Error))
         // wirteComment(projectID,issueID,usernameInRequest,bodyCommentFor404Error);
         break;
       case 405:
-        if (!checkCommentExist(projectID, issueID, bodyCommentFor405Error))
+        if (!checkCommentExist(projectID, issueID, bodyCommentFor405Error)){
           wirteComment(
             projectID,
             issueID,
             usernameInRequest,
             bodyCommentFor405Error
           );
+        }
         // if (!checkCommentExists(projectID,issueID,usernameInRequest,bodyCommentFor405Error))
         // wirteComment(projectID,issueID,usernameInRequest,bodyCommentFor405Error);
         break;
