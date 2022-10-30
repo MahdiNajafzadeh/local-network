@@ -1,11 +1,10 @@
 const postAPI = require("../Services/request/post");
 const { log } = require("node:console");
-module.exports = (projectID, issueID, userName, body) => {
-  let gijg = "?body=${body}";
-  let body2 = {body: body}
+module.exports = (projectID, issueID, body) => {
+  let bodyObject = {body: body}
   try {
-    if (projectID && issueID && userName) {
-      postAPI(`/projects/${projectID}/issues/${issueID}/notes`, body2)
+    if (projectID && issueID ) {
+      postAPI(`/projects/${projectID}/issues/${issueID}/notes`, bodyObject)
         .then((res) => {
           if (res.state) {
             log(`
@@ -18,7 +17,6 @@ module.exports = (projectID, issueID, userName, body) => {
             state API : ${res.state}
             API Error : ${res.data} 
              `);
-             log(res.data)
           }
         })
         .catch((error) => {

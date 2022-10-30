@@ -1,5 +1,4 @@
 const { execSync } = require("node:child_process");
-const { log } = require("node:console");
 
 module.exports = (name) => {
   try {
@@ -13,19 +12,7 @@ module.exports = (name) => {
     }).toString();
     // analysis data
     let resulteQueryArry = resulteQueryFromAD.trim().split("\r\n");
-
-    // log("resulteQueryFromAD : ");
-    // log(resulteQueryFromAD);
-    // log("----------------------------------------------------");
-    // log("resulteQueryArry : ");
-    // log(resulteQueryArry);
-    // log("----------------------------------------------------");
-    // log("resulteQueryArry.length : " + resulteQueryArry.length);
-    // log("!resulteQueryFromAD : " + !!resulteQueryFromAD);
-    // log("resulteQueryArry.length < 4 : " + (resulteQueryArry.length < 4));
-
-    // check to number of user results
-    resulteQueryFromAD = false;
+    // check user results
     if (!resulteQueryFromAD) {
       console.log(`${name} not found`);
       return {
@@ -57,7 +44,6 @@ module.exports = (name) => {
         userLocation: allDataUser[2],
         Disabled: Disabled,
       };
-      log(objectReturnData);
       // return Data
       return objectReturnData;
     }
